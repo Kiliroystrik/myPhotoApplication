@@ -47,6 +47,7 @@ final class OrderFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
+            'customer' => CustomerFactory::new(),
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'deliveryAddress' => self::faker()->address(),
         ];
