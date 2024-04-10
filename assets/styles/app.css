@@ -1,1 +1,82 @@
+/* Base styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar__logo {
+    font-size: 24px;
+}
+
+.navbar__menu {
+    list-style-type: none;
+    display: flex;
+}
+
+.navbar__item {
+    margin-right: 20px;
+}
+
+.navbar__item a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Grid layout */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 20px;
+}
+
+/* Photo card styles */
+.photo-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.photo-card__image {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.photo-card__info {
+    padding: 20px;
+}
+
+.photo-card__title {
+    margin-top: 0;
+}
+
+.photo-card__button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.photo-card__button:hover {
+    background-color: #0056b3;
+}

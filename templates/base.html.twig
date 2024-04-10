@@ -15,10 +15,24 @@
 		{% endblock %}
 	</head>
 	<body>
-		<header></header>
+		<header>
+			<nav class="navbar">
+				<div class="navbar__logo">Logo</div>
+				<ul class="navbar__menu">
+					<li class="navbar__item">
+						<a href="#">Accueil</a>
+					</li>
+					<li class="navbar__item">
+						<a href="#">Photos</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
 		<main>
 			{% block body %}{% endblock %}
 		</main>
-		<footer></footer>
+		<footer>
+			<p>&copy; 2024 Mon E-commerce. Tous droits réservés.</p>
+		</footer>
 	</body>
 </html>
