@@ -80,3 +80,9 @@ body {
 .photo-card__button:hover {
     background-color: #0056b3;
 }
+
+/* Style pour les liens autour de chaque carte photo */
+.photo-card-link {
+    text-decoration: none;
+    color: inherit; /* Facultatif : garde la couleur par défaut du texte */
+}
