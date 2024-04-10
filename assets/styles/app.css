@@ -86,3 +86,17 @@ body {
     text-decoration: none;
     color: inherit; /* Facultatif : garde la couleur par défaut du texte */
 }
+
+.photo-card__tags {
+    margin: 10px 0;
+}
+
+.photo-card__tag {
+    display: inline-block;
+    background-color: #67b0ff;
+    color: #fff;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+}

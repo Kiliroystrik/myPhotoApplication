@@ -53,6 +53,7 @@ final class PhotoFactory extends ModelFactory
             'description' => self::faker()->text(255),
             'imageUrl' => self::faker()->imageUrl(640, 480),
             'metaInfo' => ["info" => self::faker()->text()],
+            'tags' => TagFactory::createMany(2),
         ];
     }
 

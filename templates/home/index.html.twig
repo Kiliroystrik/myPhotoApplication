@@ -1,25 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - Mon E-commerce
-{% endblock %}
+{% block title %}Accueil - Mon E-commerce{% endblock %}
 
 {% block body %}
-	<div class="wrapper">
-		<h1>Bienvenue sur notre E-commerce</h1>
-		<div class="photo-grid">
-			{% for photo in photos %}
-				<a href="{{ path('app_photo_show', { 'id': photo.id }) }}" class="photo-card-link">
-					<div class="photo-card">
-						<img class="photo-card__image" src="{{ photo.imageUrl }}" alt="{{ photo.title }}">
-						<div class="photo-card__info">
-							<h2 class="photo-card__title">{{ photo.title }}</h2>
-							<p class="photo-card__description">{{ photo.description }}</p>
-							<p class="photo-card__price">{{ photo.price }}</p>
-							<button class="photo-card__button">Ajouter au panier</button>
-						</div>
-					</div>
-				</a>
-			{% endfor %}
-		</div>
-	</div>
+    <div class="wrapper">
+        <h1>Bienvenue sur notre E-commerce</h1>
+        <div class="photo-grid">
+            {% for photo in photos %}
+                <a href="{{ path('app_photo_show', { 'id': photo.id }) }}" class="photo-card-link">
+                    <div class="photo-card">
+                        <img class="photo-card__image" src="{{ photo.imageUrl }}" alt="{{ photo.title }}">
+                        <div class="photo-card__info">
+                            <h2 class="photo-card__title">{{ photo.title }}</h2>
+                            <p class="photo-card__description">{{ photo.description }}</p>
+                            <p class="photo-card__price">{{ photo.price }}</p>
+                            <div class="photo-card__tags">
+                                {% for tag in photo.tags %}
+                                    <span class="photo-card__tag">{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <button class="photo-card__button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
