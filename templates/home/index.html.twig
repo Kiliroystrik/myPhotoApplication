@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+
+{% block body %}
+
+	<div class="example-wrapper">
+		<h1>Bienvenue sur la page d'accueil</h1>
+
+		<div>
+			<figure>
+				{% for photo in photos %}
+					{{ photo.title }}
+					<img src="{{ photo.imageUrl }}" alt="{{photo.metaInfo['info']}}">
+					<figcaption>
+						{{ photo.description }}
+					</figcaption>
+					<span>
+						{{ photo.price}}
+					</span>
+				{% endfor %}
+			</figure>
+		</div>
+	</div>
+{% endblock %}
