@@ -47,7 +47,8 @@ final class PhotoFactory extends ModelFactory
     protected function getDefaults(): array
     {
         $imageId = self::faker()->numberBetween(1, 1000); // Choose a random image from Lorem Picsum
-        $imageUrl = "https://picsum.photos/640/480?id={$imageId}";
+        $imageUrl = "https://picsum.photos/" . $imageId . "/640/480";
+
 
         return [
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
