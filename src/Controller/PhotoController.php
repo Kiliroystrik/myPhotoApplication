@@ -42,7 +42,7 @@ class PhotoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_photo_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'app_photo_show', methods: ['GET'])]
     public function show(Photo $photo): Response
     {
         return $this->render('photo/show.html.twig', [
@@ -50,7 +50,7 @@ class PhotoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_photo_edit', methods: ['GET', 'POST'])]
+    #[Route('/{slug}/edit', name: 'app_photo_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Photo $photo, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PhotoType::class, $photo);
@@ -71,7 +71,7 @@ class PhotoController extends AbstractController
     #[Route('/{id}', name: 'app_photo_delete', methods: ['POST'])]
     public function delete(Request $request, Photo $photo, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$photo->getId(), $request->getPayload()->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $photo->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($photo);
             $entityManager->flush();
         }

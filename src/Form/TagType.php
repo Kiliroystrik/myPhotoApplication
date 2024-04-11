@@ -17,10 +17,9 @@ class TagType extends AbstractType
             ->add('name')
             ->add('photos', EntityType::class, [
                 'class' => Photo::class,
-'choice_label' => 'id',
-'multiple' => true,
-            ])
-        ;
+                'choice_label' => 'name',
+                'multiple' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

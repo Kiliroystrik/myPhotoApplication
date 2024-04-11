@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PhotoRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -49,10 +50,20 @@ class Photo
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'photo', orphanRemoval: true)]
     private Collection $orderItems;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function slugify(string $title): string
+    {
+        $slug = new Slugify();
+        return $slug->slugify($title);
     }
 
     public function getId(): ?int
@@ -80,6 +91,8 @@ class Photo
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        $this->slug = $this->slugify($title);
 
         return $this;
     }
@@ -194,6 +207,18 @@ class Photo
                 $orderItem->setPhoto(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $this->slugify($slug);
 
         return $this;
     }

@@ -3,6 +3,11 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #5751792a;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: rgb(41, 36, 43);
 }
 
 .wrapper {
@@ -13,16 +18,34 @@ body {
 
 /* Navbar styles */
 .navbar {
-    background-color: #333;
+    background-color: #575179;
     color: #fff;
-    padding: 10px 20px;
+    padding: 5px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.navbar__logo {
-    font-size: 24px;
+.navbar p {
+    color: white;
+}
+
+.navbar__logo > img{
+    width: 70px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.2);
+}
+
+.navbar__svg {
+    stroke: white;
 }
 
 .navbar__menu {
@@ -32,11 +55,20 @@ body {
 
 .navbar__item {
     margin-right: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .navbar__item a {
     color: #fff;
     text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.navbar__item a:hover {
+    color: #40ada4;
+    transform: scale(1.1);
 }
 
 /* Grid layout */
@@ -48,14 +80,21 @@ body {
 
 /* Photo card styles */
 .photo-card {
-    background-color: #f9f9f9;
+    background-color: #ffffffa8;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .photo-card__image {
     width: 100%;
-    height: auto;
+    height: 200px;
+    object-fit: cover;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
@@ -69,7 +108,7 @@ body {
 }
 
 .photo-card__button {
-    background-color: #007bff;
+    background-color: #51dacf;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -78,7 +117,7 @@ body {
 }
 
 .photo-card__button:hover {
-    background-color: #0056b3;
+    background-color: #40ada4;
 }
 
 /* Style pour les liens autour de chaque carte photo */
@@ -93,10 +132,18 @@ body {
 
 .photo-card__tag {
     display: inline-block;
-    background-color: #67b0ff;
+    background-color: #8867ff;
     color: #fff;
     padding: 5px 10px;
     margin-right: 5px;
     border-radius: 5px;
     font-size: 14px;
+}
+
+.photo-card__tag{
+    background-color: darken(#8867ff, 10%);
+}
+
+.photo-card__tag:hover{
+    background-color: #6c51cf;
 }

@@ -49,8 +49,8 @@ final class CustomerFactory extends ModelFactory
         return [
             'age' => self::faker()->randomNumber(2),
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'email' => self::faker()->email(),
             'name' => self::faker()->firstName(),
+            'user' => UserFactory::new(),
         ];
     }
 

@@ -49,7 +49,7 @@ final class PhotoFactory extends ModelFactory
         return [
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'price' => self::faker()->randomFloat(2, 10, 1000),
-            'title' => self::faker()->word(),
+            'title' => self::faker()->words(3, true),
             'description' => self::faker()->text(255),
             'imageUrl' => self::faker()->imageUrl(640, 480),
             'metaInfo' => ["info" => self::faker()->text()],
