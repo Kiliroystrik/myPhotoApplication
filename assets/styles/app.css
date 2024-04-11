@@ -6,6 +6,10 @@ body {
     background-color: #5751792a;
 }
 
+a {
+    text-decoration: none;
+}
+
 h1, h2, h3, h4, h5, h6, p {
     color: rgb(41, 36, 43);
 }

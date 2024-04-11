@@ -16,6 +16,8 @@ class CartController extends AbstractController
     {
         $cart = $session->get('cart', []);
 
+        $datas = [];
+
         $total = 0;
         foreach ($cart as $id => $item) {
             $photo = $photoRepository->find($id);
@@ -71,7 +73,7 @@ class CartController extends AbstractController
 
         // Je supprime la photo du panier
         foreach ($cart as $key => $item) {
-            if ($item['id'] === $id) {
+            if ($key === $id) {
                 unset($cart[$key]);
                 break;
             }
@@ -81,7 +83,7 @@ class CartController extends AbstractController
         $session->set('cart', $cart);
 
         // Redirection vers la page du panier ou autre page spécifiee
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_cart_show');
     }
 
     #[Route('/clear', name: 'clear')]

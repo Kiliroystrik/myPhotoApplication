@@ -10,21 +10,20 @@
 		<table class="table">
 			<tbody>
 				<tr>
-					<th>Id</th>
-					<td>{{ user.id }}</td>
-				</tr>
-				<tr>
 					<th>Email</th>
 					<td>{{ user.email }}</td>
 				</tr>
+
 				<tr>
-					<th>Roles</th>
-					<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+					<th>Name</th>
+					<td>{{ user.customer.name }}</td>
 				</tr>
+
 				<tr>
-					<th>Password</th>
-					<td>{{ user.password }}</td>
+					<th>Age</th>
+					<td>{{ user.customer.age }}</td>
 				</tr>
+
 			</tbody>
 		</table>
 

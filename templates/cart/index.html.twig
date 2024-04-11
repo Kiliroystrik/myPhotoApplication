@@ -9,44 +9,60 @@
 
 		<h1 class="cart__title">Panier</h1>
 
-		<table class="cart__table">
-			<thead>
-				<tr>
-					<th class="cart__header">Titre</th>
-					<th class="cart__header">Photo</th>
-					<th class="cart__header">Prix</th>
-					<th class="cart__header">Quantité</th>
-					<th class="cart__header">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for item in datas %}
+		{% if datas|length == 0 %}
+			<p class="cart__empty">Le panier est vide</p>
+		{% else %}
+
+			<table class="cart__table">
+				<thead>
 					<tr>
-						<td class="cart__cell">{{ item.photo.title }}</td>
-						<td class="cart__cell"><img src="{{ item.photo.imageUrl }}" alt="{{ item.photo.title }}" class="cart__image"></td>
-						<td class="cart__cell">{{ item.photo.price }}</td>
-						<td class="cart__cell">{{ item.quantity }}</td>
-						<td class="cart__cell">
-							<a href="{{ path('app_cart_decrement', {'id': item.photo.id}) }}" class="cart__btn cart__btn--decrement">-</a>
-							<a href="{{ path('app_cart_increment', {'id': item.photo.id}) }}" class="cart__btn cart__btn--increment">+</a>
-							<a href="{{ path('app_cart_remove', {'id': item.photo.id}) }}" class="cart__btn cart__btn--remove">Supprimer</a>
+						<th class="cart__header">Titre</th>
+						<th class="cart__header">Photo</th>
+						<th class="cart__header">Prix</th>
+						<th class="cart__header">Quantité</th>
+						<th class="cart__header">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in datas %}
+						<tr>
+							<td class="cart__cell">{{ item.photo.title }}</td>
+							<td class="cart__cell"><img src="{{ item.photo.imageUrl }}" alt="{{ item.photo.title }}" class="cart__image"></td>
+							<td class="cart__cell">{{ item.photo.price }}</td>
+							<td class="cart__cell">{{ item.quantity }}</td>
+							<td class="cart__cell">
+								<a href="{{ path('app_cart_decrement', {'id': item.photo.id}) }}" class="cart__btn cart__btn--decrement">-</a>
+								<a href="{{ path('app_cart_increment', {'id': item.photo.id}) }}" class="cart__btn cart__btn--increment">+</a>
+								<a href="{{ path('app_cart_remove', {'id': item.photo.id}) }}" class="cart__btn cart__btn--remove">Supprimer</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="cart__cell">Aucun enregistrement trouvé</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="5" class="cart__cell">
+							<a href="{{ path('app_cart_clear') }}" class="cart__btn cart__btn--clear">Vider le panier</a>
 						</td>
 					</tr>
-				{% else %}
 					<tr>
-						<td colspan="5" class="cart__cell">Aucun enregistrement trouvé</td>
+						<td colspan="5" class="cart__cell">
+							<a href="{{ path('app_home') }}" class="cart__btn cart__btn--continue">Continuer mes achats</a>
+						</td>
 					</tr>
-				{% endfor %}
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="5" class="cart__cell">
-						<a href="{{ path('app_cart_clear') }}" class="cart__btn cart__btn--clear">Vider le panier</a>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
+					<tr>
+						<td colspan="5" class="cart__cell">
+							<p class="cart__total">Total :
+								{{ total }}</p>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+
+		{% endif %}
 
 	</div>
-
 {% endblock %}
