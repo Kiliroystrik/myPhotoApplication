@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier
+{% endblock %}
+
+{% block body %}
+
+	<div class="cart">
+
+		<h1 class="cart__title">Panier</h1>
+
+		<table class="cart__table">
+			<thead>
+				<tr>
+					<th class="cart__header">Titre</th>
+					<th class="cart__header">Photo</th>
+					<th class="cart__header">Prix</th>
+					<th class="cart__header">Quantité</th>
+					<th class="cart__header">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in datas %}
+					<tr>
+						<td class="cart__cell">{{ item.photo.title }}</td>
+						<td class="cart__cell"><img src="{{ item.photo.imageUrl }}" alt="{{ item.photo.title }}" class="cart__image"></td>
+						<td class="cart__cell">{{ item.photo.price }}</td>
+						<td class="cart__cell">{{ item.quantity }}</td>
+						<td class="cart__cell">
+							<a href="{{ path('app_cart_decrement', {'id': item.photo.id}) }}" class="cart__btn cart__btn--decrement">-</a>
+							<a href="{{ path('app_cart_increment', {'id': item.photo.id}) }}" class="cart__btn cart__btn--increment">+</a>
+							<a href="{{ path('app_cart_remove', {'id': item.photo.id}) }}" class="cart__btn cart__btn--remove">Supprimer</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="5" class="cart__cell">Aucun enregistrement trouvé</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5" class="cart__cell">
+						<a href="{{ path('app_cart_clear') }}" class="cart__btn cart__btn--clear">Vider le panier</a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+
+	</div>
+
+{% endblock %}

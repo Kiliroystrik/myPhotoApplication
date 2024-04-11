@@ -6,6 +6,7 @@ use App\Entity\Customer;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,12 +17,13 @@ class UserType extends AbstractType
         $builder
             ->add('email')
             ->add('roles')
-            ->add('password')
+            ->add('password', PasswordType::class, [
+                'toggle' => true,
+            ])
             ->add('customer', EntityType::class, [
                 'class' => Customer::class,
-'choice_label' => 'id',
-            ])
-        ;
+                'choice_label' => 'id',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
