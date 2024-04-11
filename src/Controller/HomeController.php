@@ -13,9 +13,11 @@ class HomeController extends AbstractController
     public function index(PhotoRepository $photoRepository): Response
     {
         $photos = $photoRepository->findAll();
+        $total = 0;
 
         return $this->render('home/index.html.twig', [
             'photos' => $photos,
+            'total' => $total
         ]);
     }
 }

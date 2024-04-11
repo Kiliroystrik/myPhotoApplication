@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Repository\PhotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\UX\Turbo\TurboBundle;
 
 #[Route('/cart', name: 'app_cart_')]
 class CartController extends AbstractController
@@ -37,7 +39,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/add/{id}', name: 'add')]
-    public function addToCart(SessionInterface $session, PhotoRepository $photoRepository, int $id): Response
+    public function addToCart(Request $request, SessionInterface $session, PhotoRepository $photoRepository, int $id): Response
     {
         // Je recupère mon panier si il existe, sinon je le crée
         $cart = $session->get('cart', []);
@@ -58,11 +60,31 @@ class CartController extends AbstractController
             ];
         }
 
+        // $total = 0;
+        // 🔥 The magic happens here! 🔥
+        // if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+        //     // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+
+        //     // Je calcul la quantité totale des articles du panierr
+        //     foreach ($cart as $item) {
+        //         $total += $item['quantity'];
+        //     }
+        //     $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+        //     return $this->render('task/success.stream.html.twig', ['total' => $total]);
+        // }
+
         // Je sauvegarde le panier mis à jour dans la session
         $session->set('cart', $cart);
 
+        $total = 0;
+
+        // Je calcul la quantité totale des articles du panierr
+        foreach ($cart as $item) {
+            $total += $item['quantity'];
+        }
+
         // Redirection vers la page du panier ou autre page après ajout
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_home', ['total' => $total]);
     }
 
     #[Route('/remove/{id}', name: 'remove')]
