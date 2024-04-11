@@ -22,7 +22,10 @@
 								<span class="photo-card__tag">{{ tag.name }}</span>
 							{% endfor %}
 						</div>
-						<a href="{{ path('app_cart_add', { 'id': photo.id }) }}" class="photo-card__button">Ajouter au panier</a>
+						<form action="{{ path('app_cart_add', { id: photo.id }) }}" method="POST">
+							<button type="submit" class="photo-card__button">Ajouter au panier</button>
+						</form>
+
 					</div>
 				</div>
 			{% endfor %}

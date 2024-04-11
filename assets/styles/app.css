@@ -168,6 +168,7 @@ footer p {
 
 .navbar__cart {
     display: flex;
+    align-items: center;
 }
 
 /* Dropdown */
