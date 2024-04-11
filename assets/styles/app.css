@@ -166,6 +166,10 @@ footer p {
     background-color: #6c51cf;
 }
 
+.navbar__cart {
+    display: flex;
+}
+
 /* Dropdown */
 /* Style du bouton */
 .dropbtn {
