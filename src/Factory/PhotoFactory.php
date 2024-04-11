@@ -46,12 +46,15 @@ final class PhotoFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
+        $imageId = self::faker()->numberBetween(1, 1000); // Choose a random image from Lorem Picsum
+        $imageUrl = "https://picsum.photos/640/480?id={$imageId}";
+
         return [
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'price' => self::faker()->randomFloat(2, 10, 1000),
             'title' => self::faker()->words(3, true),
             'description' => self::faker()->text(255),
-            'imageUrl' => self::faker()->imageUrl(640, 480),
+            'imageUrl' => $imageUrl,
             'metaInfo' => ["info" => self::faker()->text()],
             'tags' => TagFactory::createMany(2),
         ];
