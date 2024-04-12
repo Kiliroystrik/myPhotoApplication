@@ -1,34 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Order{% endblock %}
+{% block title %}Order
+{% endblock %}
 
 {% block body %}
-    <h1>Order</h1>
+	<div class="wrapper">
+		<h1 class="order-header">Order Details</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th>DeliveryAddress</th>
-                <td>{{ order.deliveryAddress }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>ModifiedAt</th>
-                <td>{{ order.modifiedAt ? order.modifiedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+		<table class="order-table">
+			<tbody>
+				<tr class="order-table__row">
+					<th class="order-table__header">Id</th>
+					<td class="order-table__data">{{ order.id }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Delivery Address</th>
+					<td class="order-table__data">{{ order.deliveryAddress }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Created At</th>
+					<td class="order-table__data">{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Modified At</th>
+					<td class="order-table__data">{{ order.modifiedAt ? order.modifiedAt|date('Y-m-d H:i:s') : '' }}</td>
+				</tr>
+			</tbody>
 
-    <a href="{{ path('app_order_index') }}">back to list</a>
+			<tbody>
+				{% for orderItem in order.orderItems %}
+					<tr class="order-table__row">
+						<td class="order-table__data"><img src="{{ orderItem.photo.imageUrl }}" alt="{{ orderItem.photo.title }}" class="order-table__image"></td>
+						<td class="order-table__data">{{ orderItem.photo.title }}</td>
+						<td class="order-table__data">{{ orderItem.quantity }}</td>
+						<td class="order-table__data">{{ orderItem.price }}€</td>
+						<td class="order-table__data">{{ (orderItem.price * orderItem.quantity) | number_format(2, '.', ',') }}€</td>
+					</tr>
+				{% else %}
+					<tr class="order-table__row">
+						<td colspan="5" class="order-table__data--empty">No items found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
 
-    <a href="{{ path('app_order_edit', {'id': order.id}) }}">edit</a>
+			<tfoot>
+				<tr class="order-table__row">
+					<th colspan="4" class="order-table__header">Total</th>
+					<td class="order-table__data">{{ totalPrice | number_format(2, '.', ',') }}€</td>
+				</tr>
+			</tfoot>
+		</table>
 
-    {{ include('order/_delete_form.html.twig') }}
+		<a href="{{ path('app_order_index') }}" class="order-back-link">Back to list</a>
+	</div>
+
 {% endblock %}

@@ -3,79 +3,100 @@
 namespace App\Controller;
 
 use App\Entity\Order;
+use App\Entity\OrderItem;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
+use App\Repository\PhotoRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/order')]
 class OrderController extends AbstractController
 {
     #[Route('/', name: 'app_order_index', methods: ['GET'])]
-    public function index(OrderRepository $orderRepository): Response
+    public function index(OrderRepository $orderRepository, UserInterface $user, UserRepository $userRepository): Response
     {
+        // Je récupère le customer 
+        $userIdentified = $user->getUserIdentifier();
+        $userIdentified = $userRepository->findOneBy(['email' => $userIdentified]);
+        $customer = $userIdentified->getCustomer();
+
+        $orders = $orderRepository->findBy(['customer' => $customer->getId()]);
+
         return $this->render('order/index.html.twig', [
-            'orders' => $orderRepository->findAll(),
+            'orders' => $orders,
         ]);
     }
 
     #[Route('/new', name: 'app_order_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserInterface $user, UserRepository $userRepository, PhotoRepository $photoRepository): Response
     {
         $order = new Order();
-        $form = $this->createForm(OrderType::class, $order);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($order);
-            $entityManager->flush();
+        // Je récupère le customer 
+        $userIdentified = $user->getUserIdentifier();
+        $userIdentified = $userRepository->findOneBy(['email' => $userIdentified]);
+        $customer = $userIdentified->getCustomer();
 
-            return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
+        $order->setCustomer($customer);
+        // Je récupère mon panier
+
+        $cart = $session->get('cart');
+
+        // Pour chaque item du panier je créer un nouveau OrderItem
+        foreach ($cart as $item => $value) {
+
+            $orderItem = new OrderItem();
+            $orderItem->setQuantity($value['quantity']);
+
+            // Je cherche la photo correspondante
+            $photo = $photoRepository->findOneBy(['id' => $item]);
+            $orderItem->setPrice($photo->getPrice());
+            $orderItem->setPhoto($photo);
+            $orderItem->setOrder($order);
+            $order->addOrderItem($orderItem);
         }
 
-        return $this->render('order/new.html.twig', [
-            'order' => $order,
-            'form' => $form,
-        ]);
+        // Je persist mon order
+
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        $session->remove('cart');
+
+
+        return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
 
     #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
-    public function show(Order $order): Response
+    public function show(Order $order, UserInterface $user, UserRepository $userRepository): Response
     {
-        return $this->render('order/show.html.twig', [
-            'order' => $order,
-        ]);
-    }
+        // Je récupère le customer 
+        $userIdentified = $user->getUserIdentifier();
+        $userIdentified = $userRepository->findOneBy(['email' => $userIdentified]);
+        $customer = $userIdentified->getCustomer();
 
-    #[Route('/{id}/edit', name: 'app_order_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Order $order, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(OrderType::class, $order);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
+        // Je calcul le prix total
+        $totalPrice = 0;
+        foreach ($order->getOrderItems() as $orderItem) {
+            $totalPrice += $orderItem->getPrice() * $orderItem->getQuantity();
         }
 
-        return $this->render('order/edit.html.twig', [
-            'order' => $order,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_order_delete', methods: ['POST'])]
-    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->getPayload()->get('_token'))) {
-            $entityManager->remove($order);
-            $entityManager->flush();
+        // Si mon customer ne possède pas cet order, je renvoie une 403
+        if (!$order->getCustomer()->getId() == $customer->getId()) {
+            // TO-DO : renvoyer une page d'erreur
+            return $this->redirectToRoute('app_home');
+        } else {
+            return $this->render('order/show.html.twig', [
+                'order' => $order,
+                'totalPrice' => $totalPrice
+            ]);
         }
-
-        return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
     }
 }
