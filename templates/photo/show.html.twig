@@ -5,29 +5,31 @@
 
 {% block body %}
 	<div class="wrapper">
-		<div class="product-details">
-			<h1>{{ photo.title }}</h1>
+		<div class="photo-details">
+			<h1 class="photo-details__title">{{ photo.title }}</h1>
 
-			<div class="product-details__info">
-				<div class="product-details__image">
-					<img src="{{ photo.imageUrl }}" alt="{{ photo.title }}">
+			<div class="photo-details__info">
+				<div class="photo-details__image-container">
+					<img width="300px" height="auto" src="{{ photo.imageUrl }}" alt="{{ photo.title }}" class="photo-details__image">
 				</div>
-				<div class="product-details__description">
-					<p>{{ photo.description }}</p>
-					<p>Prix :
-						{{ photo.price }}
-						€</p>
-					<p>Créé le :
+				<div class="photo-details__description">
+					<p class="photo-details__text">{{ photo.description }}</p>
+					<p class="photo-details__price">Prix :
+						{{ photo.price }}€</p>
+					<p class="photo-details__created">Créé le :
 						{{ photo.createdAt ? photo.createdAt|date('d/m/Y H:i') : 'Non spécifié' }}</p>
-					<p>Modifié le :
+					<p class="photo-details__modified">Modifié le :
 						{{ photo.modifiedAt ? photo.modifiedAt|date('d/m/Y H:i') : 'Non spécifié' }}</p>
+					<form class="photo-card__form" action="{{ path('app_cart_add', { id: photo.id }) }}" method="POST">
+						<button type="submit" class="photo-card__button">Ajouter au panier</button>
+						{# Ajout d'un input de type chiffre pour la quantité #}
+						<input type="number" name="quantity" min="1" max="90" value="1">
+					</form>
 				</div>
 			</div>
 
-			<div class="product-details__actions">
-				<a href="{{ path('app_photo_index') }}" class="btn btn-primary">Retour à la liste</a>
-				<a href="{{ path('app_photo_edit', {'slug': photo.slug}) }}" class="btn btn-secondary">Modifier</a>
-				{{ include('photo/_delete_form.html.twig') }}
+			<div class="photo-details__actions">
+				<a class="photo-card__button" href="{{ path('app_home') }}" class="photo-details__link btn btn-primary">Retour à la liste</a>
 			</div>
 		</div>
 	</div>
