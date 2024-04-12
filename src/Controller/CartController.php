@@ -52,13 +52,31 @@ class CartController extends AbstractController
             throw $this->createNotFoundException('Photo not found');
         }
 
+        // Je récupère la quantité de mon formulaire
+        $quantity = $request->request->get('quantity');
+
         // Je regarde si la photo est dans le panier
         if (isset($cart[$id])) {
-            $cart[$id]['quantity'] += 1;
+            // Si quantité est renseignée
+
+            if ($quantity !== null && $quantity >= 1) {
+                $cart[$id]['quantity'] += $quantity;
+            } else {
+                $cart[$id]['quantity'] += 1;
+            }
         } else {
-            $cart[$id] = [
-                'quantity' => 1
-            ];
+
+            // Si quantité est renseignée
+            if ($quantity !== null && $quantity >= 1) {
+                $cart[$id] = [
+                    'quantity' => $quantity
+                ];
+            } else {
+                $cart[$id] = [
+
+                    'quantity' => 1
+                ];
+            }
         }
 
         $total = 0;

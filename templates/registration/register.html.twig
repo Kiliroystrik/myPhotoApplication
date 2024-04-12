@@ -4,19 +4,37 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Register</h1>
+	<h1 class="registration__title">Register</h1>
 
-	{{ form_errors(registrationForm) }}
+	<div class="registration__errors">
+		{{ form_errors(registrationForm) }}
+	</div>
 
-	{{ form_start(registrationForm) }}
-	{{ form_row(registrationForm.email) }}
-	{{ form_row(registrationForm.name) }}
-	{{ form_row(registrationForm.age) }}
-	{{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-	{{ form_row(registrationForm.agreeTerms) }}
+	{{ form_start(registrationForm, {'attr': {'class': 'registration__form'}}) }}
 
-	<button type="submit" class="btn">Register</button>
+	<div class="registration__field">
+		{{ form_row(registrationForm.email, {'attr': {'class': 'registration__input'}}) }}
+	</div>
+
+	<div class="registration__field">
+		{{ form_row(registrationForm.customer.name, {'attr': {'class': 'registration__input'}}) }}
+	</div>
+
+	<div class="registration__field">
+		{{ form_row(registrationForm.customer.age, {'attr': {'class': 'registration__input'}}) }}
+	</div>
+
+	<div class="registration__field">
+		{{ form_row(registrationForm.plainPassword, {
+        'label': 'Password',
+        'attr': {'class': 'registration__input'}
+    }) }}
+	</div>
+
+	<div class="registration__checkbox">
+		{{ form_row(registrationForm.agreeTerms, {'attr': {'class': 'registration__checkbox-input'}}) }}
+	</div>
+
+	<button type="submit" class="registration__button">Register</button>
 	{{ form_end(registrationForm) }}
 {% endblock %}

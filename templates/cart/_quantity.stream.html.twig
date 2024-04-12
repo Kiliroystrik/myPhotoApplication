@@ -3,3 +3,13 @@
 		{{ cart_quantity }}
 	</template>
 </turbo-stream>
+
+<turbo-stream action="update" target="confirmationAddToCart">
+	<template>
+		<div data-controller="confirmation" data-confirmation-target="modal" class="confirmationAddToCart__modal">
+			<button class="confirmationAddToCart__close">&times;</button>
+			<p class="confirmationAddToCart__message">La photo a été ajoutée au panier</p>
+			<button data-action="click->confirmation#close" class="confirmationAddToCart__close">×</button>
+		</div>
+	</template>
+</turbo-stream>
