@@ -46,23 +46,39 @@ final class PhotoFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $page = self::faker()->numberBetween(1, 10); // Choisissez une page aléatoire entre 1 et 10
-        $limit = 100; // Nombre d'images par page
+        // J'utilise l'API de https://picsum.photos/v2/list pour avoir une image
+        // Je me sers de faker pour avoir une image aleatoire entre 1 et 34 car l'api n'a plus d'image au dela de 34
+        // Ici page est mon paramètre de page
+        $page = self::faker()->numberBetween(1, 34);
 
-        $imageListUrl = "https://picsum.photos/v2/list?page=$page&limit=$limit";
+        // Ici le endpoint de l'API
+        $imageListUrl = "https://picsum.photos/v2/list?page=$page";
+        // Ma requête HTTP GET au endpoint
         $imageListJson = file_get_contents($imageListUrl);
+        // Je parse le json du contenu de la requête
         $imageList = json_decode($imageListJson, true);
 
+        // Je choisis une image au hasard de la liste grace a faker
         $randomImage = self::faker()->randomElement($imageList);
+
+        // Je construit l'url de l'image
+        // Je récupère l'id de l'image $randomImage
         $imageId = $randomImage['id'] ?? null;
+        // Je recupère l'auteur de l'image que je vais mettre dans les metaInfos
         $author = $randomImage['author'] ?? '';
+        // Je recupère la largeur de l'image que je vais mettre dans les metaInfos
         $width = $randomImage['width'] ?? 640;
+        // Je recupère la hauteur de l'image que je vais mettre dans les metaInfos
         $height = $randomImage['height'] ?? 480;
 
+        // Je verifie que l'id de l'image n'est pas vide
         if (!$imageId) {
-            throw new \Exception("Failed to fetch image details.");
+            // J'affiche un message d'erreur
+            throw new \Exception("Erreur sur les détails de l'image");
         }
 
+        // Et voila l'url de l'image avec l'id, la largeur et la hauteur qui va me servir pour imageUrl
+        // Tout ce process m'aura servi pour définir une image statique et éviter les doublons depuis Lorem Picsum
         $imageUrl = "https://picsum.photos/id/$imageId/$width/$height";
 
         return [
