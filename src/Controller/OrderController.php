@@ -35,7 +35,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/new', name: 'app_order_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserInterface $user, UserRepository $userRepository, PhotoRepository $photoRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserInterface $user, UserRepository $userRepository, PhotoRepository $photoRepository, OrderRepository $orderRepository): Response
     {
         $order = new Order();
 
@@ -65,14 +65,22 @@ class OrderController extends AbstractController
 
         // Je persist mon order
 
-        $entityManager->persist($order);
-        $entityManager->flush();
+        $orderRepository->save($order, true);
 
         $session->remove('cart');
 
 
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
+
+    // route pour la validation et complétion d'une commande
+
+    #[Route('/complete/{order}', name: 'app_order_complete', methods: ['GET'])]
+    public function complete(): Response
+    {
+        return $this->render('order/complete.html.twig', []);
+    }
+
 
     #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
     public function show(Order $order, UserInterface $user, UserRepository $userRepository): Response

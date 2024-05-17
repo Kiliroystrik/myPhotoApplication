@@ -60,18 +60,49 @@
 					</a>
 				</div>
 				<ul class="navbar__menu">
-					<li class="navbar__item">
-						<a href="{{ path('app_home') }}" class="links">Accueil</a>
+					<li
+						class="navbar__item">
+						{# search bar  #}
+						{{ render(controller('App\\Controller\\PhotoController::search')) }}
 					</li>
 					<li class="navbar__item" class="links">
 						<a href="#" class="links">Photos</a>
 					</li>
+					<li
+						class="navbar__item" style="display: flex; align-items: center">
+						{# ajout d'une dropdown Tags #}
+						<div class="dropdown">
+							<button onclick="toggleDropdown()" class="dropbtn">tags</button>
+							<div id="myDropdown" class="dropdown-content">
+								{% if tagService.getMostUsedTags() %}
+									<div>
+										{% set mostUsedTags = tagService.getMostUsedTags() %}
+										{% for tag in mostUsedTags %}
+											<a href="{{ path('app_tag_show', { 'name': tag.name }) }}">{{ tag.name }}</a>
+										{% endfor %}
+									</div>
+								{% endif %}
+								<div id="searchTags">
+									{{ render(controller('App\\Controller\\TagController::search')) }}
+								</div>
+							</div>
+						</div>
+					</li>
 					{# if connected then only display logout, else display login and register #}
 					{% if app.user %}
 						<li class="navbar__item">
-							<p>Bonjour
-								{{ app.user.customer.name }}
-							</p>
+							{% if app.user.customer %}
+
+								<p>Bonjour
+									{{ app.user.customer.name }}
+								</p>
+
+							{% else %}
+
+								<p>Bonjour
+									{{ app.user.email }}
+								</p>
+							{% endif %}
 						</li>
 						<li class="navbar__item">
 							<div class="dropdown">
@@ -84,21 +115,28 @@
 								<div id="myDropdown" class="dropdown-content">
 									<a href="{{ path('app_user_show', { 'id': app.user.id }) }}">Profil</a>
 									<a href="#">Paramètres</a>
+									{% if is_granted('ROLE_ADMIN') %}
+										<a style="display: flex; align-items: center" href="{{ path('admin') }}">
+											<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#47aed6"><path d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z"/></svg>
+											<p style="color: black; margin:0">Administration</p>
+										</a>
+									{% endif %}
 									<hr>
-										<a href="{{ path('app_logout') }}">
+										<a href="{{ path('app_logout') }}" style=" display: flex; align-items: center">
 											<?xml
 											version="1.0" encoding="utf-8"?>
 											<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-											<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path fill-rule="evenodd" clip-rule="evenodd" d="M19 23H11C10.4477 23 10 22.5523 10 22C10 21.4477 10.4477 21 11 21H19C19.5523 21 20 20.5523 20 20V4C20 3.44772 19.5523 3 19 3L11 3C10.4477 3 10 2.55229 10 2C10 1.44772 10.4477 1 11 1L19 1C20.6569 1 22 2.34315 22 4V20C22 21.6569 20.6569 23 19 23Z" fill="#000000"/>
-												<path fill-rule="evenodd" clip-rule="evenodd" d="M2.48861 13.3099C1.83712 12.5581 1.83712 11.4419 2.48862 10.6902L6.66532 5.87088C7.87786 4.47179 10.1767 5.32933 10.1767 7.18074L10.1767 9.00001H16.1767C17.2813 9.00001 18.1767 9.89544 18.1767 11V13C18.1767 14.1046 17.2813 15 16.1767 15L10.1767 15V16.8193C10.1767 18.6707 7.87786 19.5282 6.66532 18.1291L2.48861 13.3099ZM4.5676 11.3451C4.24185 11.7209 4.24185 12.2791 4.5676 12.6549L8.1767 16.8193V14.5C8.1767 13.6716 8.84827 13 9.6767 13L16.1767 13V11L9.6767 11C8.84827 11 8.1767 10.3284 8.1767 9.50001L8.1767 7.18074L4.5676 11.3451Z" fill="#000000"/>
+											<svg width="24px" height="24px" viewBox="0 0 24 24" fill="#47aed6" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" clip-rule="evenodd" d="M19 23H11C10.4477 23 10 22.5523 10 22C10 21.4477 10.4477 21 11 21H19C19.5523 21 20 20.5523 20 20V4C20 3.44772 19.5523 3 19 3L11 3C10.4477 3 10 2.55229 10 2C10 1.44772 10.4477 1 11 1L19 1C20.6569 1 22 2.34315 22 4V20C22 21.6569 20.6569 23 19 23Z" fill="#47aed6"/>
+												<path fill-rule="evenodd" clip-rule="evenodd" d="M2.48861 13.3099C1.83712 12.5581 1.83712 11.4419 2.48862 10.6902L6.66532 5.87088C7.87786 4.47179 10.1767 5.32933 10.1767 7.18074L10.1767 9.00001H16.1767C17.2813 9.00001 18.1767 9.89544 18.1767 11V13C18.1767 14.1046 17.2813 15 16.1767 15L10.1767 15V16.8193C10.1767 18.6707 7.87786 19.5282 6.66532 18.1291L2.48861 13.3099ZM4.5676 11.3451C4.24185 11.7209 4.24185 12.2791 4.5676 12.6549L8.1767 16.8193V14.5C8.1767 13.6716 8.84827 13 9.6767 13L16.1767 13V11L9.6767 11C8.84827 11 8.1767 10.3284 8.1767 9.50001L8.1767 7.18074L4.5676 11.3451Z" fill="#47aed6"/>
 											</svg>
-											Logout
+											<p style="color: black; margin: 0">Deconnexion</p>
 										</a>
-									</div>
+									</hr>
 								</div>
 							</div>
 						</li>
+
 
 					{% else %}
 						<li class="navbar__item">

@@ -1,0 +1,11 @@
+Registration:
+  Register: Création de compte
+  Name: Nom
+  Age: Age
+  City: Ville
+  Password: Mot de passe
+  RepeatPassword: Confirmer le mot de passe
+  AgreeTerms: Valider les conditions d'utilisation
+  Submit: Créer le compte
+  Errors:
+    Terms: Veuillez accepter les conditions d'utilisation

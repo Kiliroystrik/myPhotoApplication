@@ -1,0 +1,30 @@
+<div class="photo-grid">
+	{% for photo in photos %}
+		<div class="photo-card">
+			<img class="photo-card__image" src="{{ asset('uploads/photos/' ~ photo.imageUrl) }}" alt="{{ photo.title }}">
+			<div class="photo-card__info">
+				<a href="{{ path('app_photo_show', { 'slug': photo.slug }) }}" class="photo-card__link">
+					<h2 class="photo-card__title">{{ photo.title }}</h2>
+				</a>
+				{# <p class="photo-card__description">{{ photo.description }}</p> #}
+				<p class="photo-card__price">{{ photo.price }}
+					€</p>
+				<div class="photo-card__tags">
+					{% for tag in photo.tags %}
+
+						<a href="{{ path('app_tag_show', { 'name': tag.name }) }}">
+							<span class="photo-card__tag">{{ tag.name }}</span>
+						</a>
+
+					{% endfor %}
+				</div>
+				<form class="photo-card__form" action="{{ path('app_cart_add', { id: photo.id }) }}" method="POST">
+					<button type="submit" class="photo-card__button">Ajouter au panier</button>
+					{# Ajout d'un input de type chiffre pour la quantité #}
+					<input class="photo-card__input" type="number" name="quantity" min="1" max="90" value="1">
+				</form>
+
+			</div>
+		</div>
+	{% endfor %}
+</div>

@@ -26,11 +26,27 @@
 					<td class="order-table__data">{{ order.modifiedAt ? order.modifiedAt|date('Y-m-d H:i:s') : '' }}</td>
 				</tr>
 			</tbody>
+		</table>
 
+		<table class="order-table">
+
+			<thead>
+				<tr class="order-table__row order-table__row--header">
+					<th class="order-table__header">Photo</th>
+					<th class="order-table__header">Title</th>
+					<th class="order-table__header">Quantity</th>
+					<th class="order-table__header">Price</th>
+					<th class="order-table__header">Total</th>
+				</tr>
+			</thead>
 			<tbody>
 				{% for orderItem in order.orderItems %}
 					<tr class="order-table__row">
-						<td class="order-table__data"><img src="{{ orderItem.photo.imageUrl }}" alt="{{ orderItem.photo.title }}" class="order-table__image"></td>
+						<td class="order-table__data">
+							<a href="{{ path('app_photo_show', { 'slug': orderItem.photo.slug }) }}">
+								<img src="{{ asset('uploads/photos/mini/300x300-' ~ orderItem.photo.imageUrl) }}" alt="{{ orderItem.photo.title }}" class="order-table__image">
+							</a>
+						</td>
 						<td class="order-table__data">{{ orderItem.photo.title }}</td>
 						<td class="order-table__data">{{ orderItem.quantity }}</td>
 						<td class="order-table__data">{{ orderItem.price }}€</td>

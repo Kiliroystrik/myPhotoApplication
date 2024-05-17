@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Photo;
 use App\Form\PhotoType;
+use App\Form\SearchPhotoType;
 use App\Repository\PhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,28 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/photo')]
 class PhotoController extends AbstractController
 {
+    // search route
+    #[Route('/search', name: 'app_photo_search', methods: ['POST', 'GET'])]
+    public function search(Request $request): Response
+    {
+        $form = $this->createForm(SearchPhotoType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $photo = $form->get('photo')->getData();
+
+            if ($photo) {
+                return $this->redirectToRoute('app_photo_show', ['slug' => $photo->getSlug()]);
+            }
+        }
+
+        return $this->render('_partials/_search.html.twig', [
+            'form' => $form
+        ]);
+    }
+
     #[Route('/', name: 'app_photo_index', methods: ['GET'])]
     public function index(PhotoRepository $photoRepository): Response
     {

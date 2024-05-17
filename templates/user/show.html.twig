@@ -15,11 +15,15 @@
 				</tr>
 				<tr class="user__row">
 					<th class="user__header">Name</th>
-					<td class="user__data">{{ user.customer.name }}</td>
+					{% if user.customer is not null %}
+						<td class="user__data">{{ user.customer.name }}</td>
+					{% endif %}
 				</tr>
 				<tr class="user__row">
 					<th class="user__header">Age</th>
-					<td class="user__data">{{ user.customer.age }}</td>
+					{% if user.customer is not null %}
+						<td class="user__data">{{ user.customer.age }}</td>
+					{% endif %}
 				</tr>
 			</tbody>
 		</table>

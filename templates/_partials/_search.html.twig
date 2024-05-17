@@ -1,0 +1,6 @@
+{# templates/_partials/_search.html.twig #}
+
+<div id="searchPhotos">
+	{{ form_start(form, { 'action': path('app_photo_search') , 'method': 'POST'}) }}
+	{{ form_end(form) }}
+</div>

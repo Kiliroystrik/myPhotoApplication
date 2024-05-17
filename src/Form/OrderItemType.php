@@ -19,13 +19,12 @@ class OrderItemType extends AbstractType
             ->add('price')
             ->add('_order', EntityType::class, [
                 'class' => Order::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
             ->add('photo', EntityType::class, [
                 'class' => Photo::class,
-'choice_label' => 'id',
-            ])
-        ;
+                'choice_label' => 'id',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

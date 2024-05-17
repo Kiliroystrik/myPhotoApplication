@@ -19,7 +19,7 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         UserFactory::new()->createMany(10);
-        UserFactory::new()->createOne(['roles' => ['ROLE_ADMIN'], 'password' => $this->passwordHasher->hashPassword(new User(), 'admin'), 'email' => 'admin@admin.com']);
+        UserFactory::new()->createOne(['roles' => ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_API'], 'password' => $this->passwordHasher->hashPassword(new User(), 'N4rutokado'), 'email' => 'borges.mathieu@gmail.com']);
 
         $manager->flush();
     }

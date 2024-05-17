@@ -10,7 +10,7 @@
 
 			<div class="photo-details__info">
 				<div class="photo-details__image-container">
-					<img width="300px" height="auto" src="{{ photo.imageUrl }}" alt="{{ photo.title }}" class="photo-details__image">
+					<img width="300px" height="auto" src="{{ asset('uploads/photos/' ~ photo.imageUrl) }}" alt="{{ photo.title }}" class="photo-details__image">
 				</div>
 				<div class="photo-details__description">
 					<p class="photo-details__text">{{ photo.description }}</p>

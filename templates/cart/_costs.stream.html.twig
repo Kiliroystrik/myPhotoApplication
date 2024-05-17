@@ -1,0 +1,77 @@
+<turbo-stream action="update" target="cartTable">
+	<template>
+		<thead>
+			<tr>
+				<th class="cart__header">Titre</th>
+				<th class="cart__header">Photo</th>
+				<th class="cart__header">Prix</th>
+				<th class="cart__header">Quantité</th>
+				<th class="cart__header">Total</th>
+				<th class="cart__header">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in datas %}
+				<tr>
+					<td class="cart__cell">{{ item.photo.title }}</td>
+					<td class="cart__cell"><img src="{{ item.photo.imageUrl }}" alt="{{ item.photo.title }}" class="cart__image"></td>
+					<td class="cart__cell">{{ item.photo.price }}€</td>
+					<td class="cart__cell">
+						<div>
+							<form class="photo-card__form" action="{{ path('app_cart_update', { id: item.photo.id }) }}" method="POST">
+								<div>
+									{# Ajout d'un input de type chiffre pour la quantité #}
+									<input type="number" name="quantity" min="1" max="90" style="width: 30px;" value="{{ item.quantity }}">
+								</div>
+							</form>
+						</div>
+					</td>
+					<td class="cart__cell">{{ item.photo.price * item.quantity }}€</td>
+					<td class="cart__cell">
+						<a href="{{ path('app_cart_remove', {'id': item.photo.id}) }}" class="cart__btn cart__btn--remove">x</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5" class="cart__cell">Aucun enregistrement trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="5" class="cart__cell">
+					<a href="{{ path('app_cart_clear') }}" class="cart__btn cart__btn--clear">Vider le panier</a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5" class="cart__cell">
+					<a href="{{ path('app_home') }}" class="cart__btn cart__btn--continue">Continuer mes achats</a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5" class="cart__cell">
+					<p class="cart__total">Total :
+						{{ total }}€</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5" class="cart__cell">
+					{% if app.user %}
+
+						<a href="{{ path('app_order_new') }}" class="cart__btn cart__btn--order">Valider la commande</a>
+					{% else %}
+						<a href="{{ path('app_login')}}" class="cart__btn cart__btn--order">
+							Veuillez vous connecter afin de valider la commande
+						</a>
+					{% endif %}
+				</td>
+			</tr>
+		</tfoot>
+	</template>
+</turbo-stream>
+
+<turbo-stream action="update" target="cart_quantity">
+	<template>
+		{{ cart_quantity }}
+	</template>
+</turbo-stream>

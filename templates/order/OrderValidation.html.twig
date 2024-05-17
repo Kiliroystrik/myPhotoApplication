@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulatif de commande
+{% endblock %}
+
+{% block body %}
+
+	<div class="wrapper">
+		<h1 class="order-header">Order Details</h1>
+
+		<table class="order-table">
+			<tbody>
+				<tr class="order-table__row">
+					<th class="order-table__header">Order ID</th>
+					<td class="order-table__data">{{ order.id }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Delivery Address</th>
+					<td class="order-table__data">{{ order.deliveryAddress }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Created At</th>
+					<td class="order-table__data">{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Modified At</th>
+					<td class="order-table__data">{{ order.modifiedAt ? order.modifiedAt|date('Y-m-d H:i:s') : '' }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Payment Method</th>
+					<td class="order-table__data">{{ order.paymentMethod }}</td>
+				</tr>
+				<tr class="order-table__row">
+					<th class="order-table__header">Shipping Method</th>
+					<td class="order-table__data">{{ order.shippingMethod }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2 class="order-header">Order Items</h2>
+		<table class="order-table">
+			<thead>
+				<tr class="order-table__row">
+					<th class="order-table__header">Image</th>
+					<th class="order-table__header">Title</th>
+					<th class="order-table__header">Quantity</th>
+					<th class="order-table__header">Unit Price</th>
+					<th class="order-table__header">Total Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for orderItem in order.orderItems %}
+					<tr class="order-table__row">
+						<td class="order-table__data">
+							<a href="{{ path('app_photo_show', { 'slug': orderItem.photo.slug }) }}">
+								<img src="{{ asset('uploads/photos/mini/300x300-' ~ orderItem.photo.imageUrl) }}" alt="{{ orderItem.photo.title }}" class="order-table__image">
+							</a>
+						</td>
+						<td class="order-table__data">{{ orderItem.photo.title }}</td>
+						<td class="order-table__data">{{ orderItem.quantity }}</td>
+						<td class="order-table__data">{{ orderItem.price }}€</td>
+						<td class="order-table__data">{{ (orderItem.price * orderItem.quantity) | number_format(2, '.', ',') }}€</td>
+					</tr>
+				{% else %}
+					<tr class="order-table__row">
+						<td colspan="5" class="order-table__data--empty">No items found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr class="order-table__row">
+					<th colspan="4" class="order-table__header">Total</th>
+					<td class="order-table__data">{{ totalPrice | number_format(2, '.', ',') }}€</td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<a href="{{ path('app_order_index') }}" class="order-back-link">Back to list</a>
+	</div>
+
+{% endblock %}
